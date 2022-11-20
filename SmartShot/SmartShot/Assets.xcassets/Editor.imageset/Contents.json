@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "keyframe-editing-icon-illustration-vector-video-editor-concept-man-making-animation-front_146120-403.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "keyframe-editing-icon-illustration-vector-video-editor-concept-man-making-animation-front_146120-404.jpg",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "keyframe-editing-icon-illustration-vector-video-editor-concept-man-making-animation-front_146120-405.jpg",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
