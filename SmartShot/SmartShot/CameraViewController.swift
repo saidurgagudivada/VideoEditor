@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 class CameraViewController: UIViewController {
-    @IBOutlet weak var imageView: UIImageView!
    
         override func viewDidLoad() {
            super.viewDidLoad()
-            navigationController?.navigationBar.isHidden = true
+            navigationController?.navigationBar.isHidden = false
         }
      
     @IBAction func tapOnBackButton(_ sender: Any) {

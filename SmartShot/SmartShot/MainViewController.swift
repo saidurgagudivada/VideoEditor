@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 
 class MainViewController: UIViewController {
     @IBOutlet weak var editorView: UIView!
@@ -23,6 +25,21 @@ class MainViewController: UIViewController {
         trimView.layer.cornerRadius = 30
         filtersView.layer.cornerRadius = 30
         cutView.layer.cornerRadius = 30
+        createFolderInDirectory()
+    }
+    
+    fileprivate func createFolderInDirectory() {
+        if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
+            let docURL = URL(string: documentsPath)!
+            let dataPath = docURL.appendingPathComponent("Vedios")
+            if !FileManager.default.fileExists(atPath: dataPath.path) {
+                do {
+                    try FileManager.default.createDirectory(atPath: dataPath.path, withIntermediateDirectories: true, attributes: nil)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
 
     @IBAction func tapOnEditorButton(_ sender: Any) {
@@ -35,7 +52,7 @@ class MainViewController: UIViewController {
         picker.allowsEditing = true
         picker.mediaTypes = ["public.movie"]
         picker.videoMaximumDuration = 11
-        picker.videoQuality = UIImagePickerController.QualityType.typeMedium
+        picker.videoQuality = UIImagePickerController.QualityType.typeHigh
         picker.cameraFlashMode = .off
         picker.cameraCaptureMode = .video
         picker.delegate = self
@@ -48,18 +65,32 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
         picker.dismiss(animated: false)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
         picker.dismiss(animated: true)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let VC = storyboard.instantiateViewController(withIdentifier: "CameraViewController") as! CameraViewController
         navigationController?.pushViewController(VC, animated: false)
-        
-            guard let image = info[UIImagePickerController.InfoKey.originalImage]
-                    as?  UIImage else {
-                          return
-                      }
-                VC.imageView.image = image 
+        guard let url = info[.mediaURL] as? URL else { return }
+        if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
+            let docURL = URL(fileURLWithPath: documentsPath)
+            let dataPath = docURL.appendingPathComponent("Vedios")
+            let dataPath2 = dataPath.appendingPathComponent("2.mov")
+            
+            do {
+                try FileManager.default.moveItem(at: url, to: dataPath2)
+            } catch {
+                print(error.localizedDescription)
             }
+            
+            
+        }
+        let video = AVPlayer(url: url)
+            let videoPlayer = AVPlayerViewController()
+            videoPlayer.player = video
+            present(videoPlayer, animated: true) {
+                video.play()
+        }
+   }
+    
     
 }
 
